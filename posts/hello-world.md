@@ -1,7 +1,7 @@
 ---
 title: Hello World!
 date: 2023-03-22
-permalink: /posts/2023/03/22/hello-world
+permalink: /posts/2023_03_22_hello-world
 ---
 
 Hi there, and welcome!
@@ -17,3 +17,5 @@ Later I may introduce other topics too, but the primary focus of this blog will 
 - Photography.
 
 My editorial method will focus on brevity. I will try to keep everything as short as possible, I will not try to explain everything from the basics, some prior knowledge will be assumed.
+
+![Why waste time say lot](./2023_03_22_hello-world/why-waste-time-say-lot.jpg)
