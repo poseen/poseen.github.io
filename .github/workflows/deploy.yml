@@ -8,7 +8,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Deploy
-        uses: poseen/github-pages-blog-action@34782cb673ab8a3de4e30119db35b3c991b6cea5
+        uses: poseen/github-pages-blog-action@9717055ffb1bfd350ab7a97881d0177f70bb3a8f
         with:
           branch: gh-pages # Optional branch for GitHub Pages
 
