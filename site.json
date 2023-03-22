@@ -9,6 +9,9 @@
     "github": "poseen",
     "linkedin": "tiborviragh"
   },
+    "newsletter": {
+    "showTwitterBanner": false,
+  },
   "seo": {
     "title": "Tibor Viragh",
     "description": "Blog of a Software Engineer",
