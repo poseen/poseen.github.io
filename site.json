@@ -1,0 +1,25 @@
+{
+  "title": "Tibor Viragh",
+  "subtitle": "Software Engineer",
+  "owner": {
+    "name": "Tibor Viragh",
+    "email": "viraght@gmail.com"
+  },
+  "social": {
+    "github": "poseen",
+    "linkedin": "tiborviragh"
+  },
+  "seo": {
+    "title": "Tibor Viragh",
+    "description": "Blog of a Software Engineer",
+    "author": "Tibor Viragh",
+    "keywords": [
+      "blog",
+      "developer", "programming", "software engineering",
+      "C#", "JAVA", "python", "shell script", "bash", "sh",
+      "linux", "windows",
+      "Tibor Viragh", "Virágh Tibor"
+    ]
+  },
+  "cname": "poseen.github.io"
+}

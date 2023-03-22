@@ -1,0 +1,3 @@
+A passionate software engineer with 14+ years of experience, very strong work ethic, and a **"decide it, own it, get it done"** attitude, eager to try and experiment with modern technologies. Enthusiastic about clean-code, having well-defined coding standards, maintaining developer-friendliness and likewise a big fan of automatism and up-to-date documentation.
+
+Currently residing in Hungary, but is open to relocation opportunities, with a particular interest in Canada and Japan.
