@@ -9,11 +9,6 @@
     "github": "poseen",
     "linkedin": "tiborviragh"
   },
-    "newsletter": {
-    "showTwitterBanner": false,
-    "currentCount": "2,000",
-    "revueUsername": "roadmapsh"
-  },
   "seo": {
     "title": "Tibor Viragh",
     "description": "Blog of a Software Engineer",
