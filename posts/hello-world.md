@@ -1,7 +1,7 @@
 ---
 title: Hello World!
 date: 2023-03-22
-permalink: /20230322-hello-world
+permalink: /posts/2023/03/22/hello-world
 ---
 
 Hi there, and welcome!
