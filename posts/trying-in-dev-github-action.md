@@ -5,18 +5,20 @@ permalink: /posts/2023_03_23_trying-in-dev-github-action
 ---
 
 ### Problem
+
 When developing a new GitHub Action, then you may want to test it continuously without publishing it first. The UI isn't too helpful here.
 
 ### Solution
+
 You can easily test your in development GitHub Actions by referring to them (in ``{{repository}}/.github/workflows/deploy.yml`` file) in the following format:
 
-```
+```text
 uses: {{USER}}/{{REPOSITORY}}@{{SHA}}
 ```
 
 Here is an example ``deploy.yaml`` file:
 
-```
+```yaml
 name: Build and Deploy
 on: [push]
 jobs:
@@ -33,7 +35,9 @@ jobs:
 ```
 
 ### Notes
+
 - ``{{SHA}}`` has to be the full SHA
 
 ### Further reading
-- https://docs.github.com/en/actions
+
+- [https://docs.github.com/en/actions](https://docs.github.com/en/actions)
