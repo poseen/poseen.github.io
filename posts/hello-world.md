@@ -9,6 +9,7 @@ Hi there, and welcome!
 My intention with this blog is keeping track of my researched topics that I don't want to forget ("mental notebook") and which may be helpful to others. This may include code snippets and/or TLDR explanations.
 
 Later I may introduce other topics too, but the primary focus of this blog will be related to software engineering. Topics I'm interested in are:
+
 - Algorithms and data structures
 - Artificial Intelligence
 - Distributed systems

@@ -845,7 +845,8 @@ pre .lineno {
     padding: .65rem .75rem;
     font-size: 1rem;
     outline: 0;
-    -webkit-appearance: none
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .mc-form__email:hover {
