@@ -14,7 +14,7 @@ We have a system where users are continuously registering themselves. We would l
 
 ### Solution: Bloom Filter
 
-Bloom filter is the collection of a bitmap and multiple hash functions where toggling bits in the bitmaps in positions calculated by the hash functions will indicate if an item is part os the set or not with a given probability.
+Bloom filter is the collection of a bitmap and multiple hash functions where toggling bits in the bitmaps in positions calculated by the hash functions will indicate if an item is part of the set or not with a given probability.
 
 #### Algorithm and data structure
 
@@ -56,6 +56,12 @@ Bloom filter can help with caching: if you don't want to cache something which w
 #### Google Chrome: malicious sites (1) (2)
 
 Chrome used bloom filters to keep users from reaching a malicious site. They have sent the bloom filter value to the clients' machines and there the URL check against this bloom filter told Chrome if the URL was in the malicious list or not.
+
+#### Spellcheck
+
+There are multiple solutions to this problem, most of them is some kind of search. It can be a linear search or a search in a tree graph. These algorithms may take O(n) to O(log(n)) steps to accomplish, and also will take a lot of space, since this way or the other, the words have to be stored.
+
+Although if we tolerate a low probability of false positives, then we can reduce it to O(1) and drastically reduce the required space. Just use bloom filter: add all the words to the filter and after that you can check if a word is added to the bloom filter or not. And as an extra, the words don't have to be stored, it is enough to have a big integer (maybe let's say a 20 bytes) to be stored. 
 
 ### Notes
 
