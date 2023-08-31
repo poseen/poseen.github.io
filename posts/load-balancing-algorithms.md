@@ -10,7 +10,7 @@ permalink: /posts/2023_08_25_a-few-load-balancing-algorithms
 
 We have an architecture where there are numerous server nodes running and we have to balance the load from the clients.
 
-![Load balancer architecture diagram](./02_load_balancer_design.png)
+![Load balancer architecture diagram](./2023_08_25_a-few-load-balancing-algorithms/02_load_balancer_design.png)
 
 We will go quickly through some of the strategies and check their strengths and weaknesses.
 
