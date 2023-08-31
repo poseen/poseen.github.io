@@ -478,7 +478,7 @@ a:hover {
 }
 
 hr {
-    margin: 4rem auto 5rem;
+    margin: 2rem auto 2rem;
     border: 0;
     width: 100%;
     text-align: center
@@ -512,7 +512,7 @@ img, video {
 
 ol li, ul li {
     font-family: Tahoma, "Times New Roman", Georgia, serif;
-    font-size: 110%
+    font-size: 100%
 }
 
 ol li > p, ul li > p {
