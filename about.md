@@ -4,6 +4,10 @@
 
 ## Work Experience
 
+### Gap year - Career Break | Dec 2022 - Present
+
+During my career break, I have focused on personal and professional growth, spending time with family, studying Japanese, obtaining AWS certificates, trying new programming languages, and developing expertise in software architectures. This time has allowed me to recharge and prepare for my next endeavor with renewed enthusiasm and a versatile skill-set.
+
 ### Software Development Engineer II @ Amazon Web Services (Canada) | 2020 Nov - 2022 Nov
 
 **Product:** Amazon MQ - RabbitMQ
@@ -73,7 +77,9 @@ Eötvös Loránd University (ELTE) - Faculty of Informatics
 
 Thesis: Chess AI
 
-## Skills
+## Additional information
+
+### Skills
 
 * .NET (Core) | C#
 * Java
@@ -82,16 +88,15 @@ Thesis: Chess AI
 * DynamoDB
 * Git
 * AWS
-* Object-oriented design
 * Development in scale
 * Agile, Kanban
 
-## Languages
+### Languages
 
 * English (Professional)
 * Hungarian (Native)
 
-## Interests
+### Interests
 
 * Mathematics
 * Cosmology

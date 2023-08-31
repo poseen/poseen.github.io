@@ -459,7 +459,7 @@ body {
 p {
     margin-bottom: 1.5rem;
     font-family: Tahoma, "Times New Roman", Georgia, serif;
-    font-size: 110%;
+    font-size: 100%;
     line-height: 150%
 }
 
@@ -654,7 +654,7 @@ footer {
 
 .about__head {
     margin: 0;
-    font-size: 1.25rem;
+    font-size: 1.0rem;
     font-family: sans-serif;
     font-weight: 500;
     line-height: 1.85rem;
@@ -663,7 +663,7 @@ footer {
 .about__description {
     color: #888;
     margin: .5rem 0;
-    font-size: 1.25rem
+    font-size: 1.0rem
 }
 
 .section__title {
