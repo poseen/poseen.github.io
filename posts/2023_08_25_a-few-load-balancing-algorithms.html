@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>A Few Load Balancing Algorithms</title>
+    <meta name="description" content="Blog of a Software Engineer"/>
+    <meta name="keywords" content="blog,developer,programming,software engineering,C#,JAVA,python,shell script,bash,sh,linux,windows,Tibor Viragh,Virágh Tibor"/>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Alegreya:400,400i|Lato:400,400i,700,900|Roboto+Mono:400,300">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/shades-of-purple.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+
+    <link rel="stylesheet" href="/css/normalize.css"/>
+    <link rel="stylesheet" href="/css/theme.css"/>
+</head>
+<body>
+<nav class="nav">
+    <div class="nav__left">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+    </div>
+    <div class="nav__right">
+
+        <a target="_blank" href="https://github.com/poseen" class="link-github">GitHub</a>
+
+
+
+        <a target="_blank" href="https://www.linkedin.com/in/tiborviragh" class="link-linkedin">LinkedIn</a>
+
+
+        <a href="mailto:viraght@gmail.com" class="link-email">Email</a>
+
+    </div>
+</nav>
+
+<article class="mar-b-7">
+    <header class="text-center">
+        <time class="mar-b-6" datetime="Fri, August 25, 2023">Fri, August 25, 2023</time>
+        <h1 class="mar-b-7">A Few Load Balancing Algorithms</h1>
+    </header>
+    <h3 id="abstract">Abstract</h3>
+<p>We have an architecture where there are numerous server nodes running and we have to balance the load from the clients.</p>
+<p><img src="./2023_08_25_a-few-load-balancing-algorithms/02_load_balancer_design.png" alt="Load balancer architecture diagram" /></p>
+<p>We will go quickly through some of the strategies and check their strengths and weaknesses.</p>
+<p>We will see that static strategies are easier on the load balancer hardware and may be cheaper, but dynamic strategies will be much better in distributing the load.</p>
+<p>We will also speak about the weighted and sticky versions of these algorithms and will see where they can be useful.</p>
+<hr />
+<h3 id="definitions">Definitions</h3>
+<h4 id="stickystrategy">Sticky strategy</h4>
+<p>When a strategy is sticky, then it will initially choose a node per client and the stick to that node until the end of the session.</p>
+<p>This is needed when session-wide data is not synced to other nodes.</p>
+<h4 id="weightedstrategy">Weighted strategy</h4>
+<p>When - for any reason like lower-end hardware, new node still syncing/booting, etc. - we want to spare a node from full pressure we can set node weights accordingly. Most of the strategies have weighted versions were we can set if a node is expected to handle more than the others. Weights may be set statically or dynamically.</p>
+<p>All non-weighted strategies can be viewed as weighted strategies where the weights are set to the same number.</p>
+<h4 id="staticstrategies">Static strategies</h4>
+<p>Strategies in this category have a preset configuration and these won't reflect the changes in the infrastructure, like a struggling node. They are easy on the load balancer hardware because they don't need any complex calculations and querying the metrics of the nodes, therefore usually a cheaper solution but may not be the best option.</p>
+<h4 id="dynamicstrategies">Dynamic strategies</h4>
+<p>Strategies in this category are usually based on metrics coming from the nodes. Therefore they are adapting and expected to secure a better availability, but it may have a higher cost (monitoring on nodes + more calculation needed).</p>
+<hr />
+<h3 id="thestrategiesdiscussed">The strategies discussed</h3>
+<ol>
+<li>Random strategy (static)</li>
+<li>Round Robin Family (static)</li>
+<li>Hashing (static)</li>
+<li>URL based (static)</li>
+<li>Metric based (dynamic)</li>
+</ol>
+<hr />
+<h3 id="randomstrategystatic">Random strategy (static)</h3>
+<p>Chooses a node randomly (according to weights) at every request (non-sticky) / client (sticky).</p>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>No monitoring needed</li>
+</ul>
+<p><strong>Cons</strong>:</p>
+<ul>
+<li>Static strategy</li>
+</ul>
+<hr />
+<h3 id="roundrobinstatic">Round Robin (static)</h3>
+<p>For every request (non-sticky) / client (sticky) it will "go around" the nodes and select them for traffic. It works with weights too.</p>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>No monitoring needed</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Static strategy</li>
+<li>Not stateless</li>
+</ul>
+<hr />
+<h3 id="ipurletchashingstrategystatic">(IP, URL, etc.) Hashing strategy (static)</h3>
+<p>Node is selected based on hashing some information coming from the client. If it is an IP address, then this strategy can be automatically sticky given the IP address doesn't change meanwhile (VPN turned on/off, new IP assigned by ISP).</p>
+<p>If the hashing is based on other information, like the called URL, then it may distribute according to the hash function. To make it sticky the selection has to happen at the first call.</p>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>No monitoring needed</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Need a good hash function</li>
+<li>Static strategy</li>
+<li>URL hashing may be problematic. (Imagine everyone hitting on the same URL.)</li>
+</ul>
+<hr />
+<h3 id="urlbased">URL based</h3>
+<p>Load balancer will forward every request according to a mapping. For example for <code>/shopping</code> it will forward every request to <code>node 2</code>, <code>/cart</code> will be forwarded to <code>node 3</code>, etc.</p>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>No monitoring</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Not really solving the load balancing issue (what if everyone is taking a look at <code>/shopping</code>)</li>
+</ul>
+<hr />
+<h3 id="leastconnectionsleastresponsetimeothermetricbaseddynamic">Least Connections / Least Response Time / Other metric based (dynamic)</h3>
+<p>Node is selected based on <strong>number of connections</strong>, <strong>average response time</strong> or <strong>other metrics</strong> we can monitor (CPU, RAM, Disk utilization) and calculate. Stickiness can be achieved here too by deciding at the first request.</p>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Dynamic strategy</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Needs monitoring</li>
+<li>Separate metric calculations may be needed</li>
+<li>More expensive</li>
+</ul>
+<hr />
+<h3 id="combinationsofstrategies">Combinations of strategies</h3>
+<p>These strategies can be combined when needed, like <strong>Least Connections + Random</strong>, where if we see that there are several nodes with the same number of minimum connections, then we choose randomly. The only limit is our imagination.</p>
+<hr />
+<h3 id="cheatsheet">Cheat sheet</h3>
+<ul>
+<li>No monitoring? <strong>Choose a static strategy</strong>!</li>
+<li>Have monitoring? <strong>Choose a dynamic strategy!</strong></li>
+<li>(Short lived) data not synced? <strong>Make strategy sticky</strong>!</li>
+<li>Nodes aren't uniform? <strong>Make strategy weighted!</strong></li>
+</ul>
+<p>You can combine. Some examples:</p>
+<ul>
+<li>No monitoring and nodes aren't uniform? <strong>Use weighted static strategy!</strong></li>
+<li>Have monitoring and nodes are going up and down? <strong>Use weighted dynamic strategy!</strong></li>
+<li>Logged in user is adding items to a cart which is not synced? <strong>Use an IP address/session/user-based strategy</strong></li>
+<li>Logged in user is adding items to a cart which is not synced, nodes have monitoring and may have different states/availability? <strong>Use an IP address/session/user-based sticky dynamic strategy</strong></li>
+</ul>
+<p><em>It is not that simple, but these can be a good start when deciding.</em></p>
+</article>
+
+
+
+<footer class="text-center mar-tb-6">
+    © 2024 Tibor Viragh, unless otherwise stated.
+</footer>
+
+<script>hljs.highlightAll();</script>
+</body>
+</html>
+

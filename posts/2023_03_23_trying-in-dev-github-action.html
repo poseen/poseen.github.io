@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>How to test unpublished GitHub action?</title>
+    <meta name="description" content="Blog of a Software Engineer"/>
+    <meta name="keywords" content="blog,developer,programming,software engineering,C#,JAVA,python,shell script,bash,sh,linux,windows,Tibor Viragh,Virágh Tibor"/>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Alegreya:400,400i|Lato:400,400i,700,900|Roboto+Mono:400,300">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/shades-of-purple.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+
+    <link rel="stylesheet" href="/css/normalize.css"/>
+    <link rel="stylesheet" href="/css/theme.css"/>
+</head>
+<body>
+<nav class="nav">
+    <div class="nav__left">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+    </div>
+    <div class="nav__right">
+
+        <a target="_blank" href="https://github.com/poseen" class="link-github">GitHub</a>
+
+
+
+        <a target="_blank" href="https://www.linkedin.com/in/tiborviragh" class="link-linkedin">LinkedIn</a>
+
+
+        <a href="mailto:viraght@gmail.com" class="link-email">Email</a>
+
+    </div>
+</nav>
+
+<article class="mar-b-7">
+    <header class="text-center">
+        <time class="mar-b-6" datetime="Thu, March 23, 2023">Thu, March 23, 2023</time>
+        <h1 class="mar-b-7">How to test unpublished GitHub action?</h1>
+    </header>
+    <h3 id="problem">Problem</h3>
+<p>When developing a new GitHub Action, then you may want to test it continuously without publishing it first. The UI isn't too helpful here.</p>
+<h3 id="solution">Solution</h3>
+<p>You can easily test your in development GitHub Actions by referring to them (in <code>{{repository}}/.github/workflows/deploy.yml</code> file) in the following format:</p>
+<pre><code class="text language-text">uses: {{USER}}/{{REPOSITORY}}@{{SHA}}
+</code></pre>
+<p>Here is an example <code>deploy.yaml</code> file:</p>
+<pre><code class="yaml language-yaml">name: Build and Deploy
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Deploy
+        uses: poseen/github-pages-blog-action@959661a660b9bd37e689c795a417a45966a466f3
+        with:
+          branch: gh-pages # Optional branch for GitHub Pages
+</code></pre>
+<h3 id="notes">Notes</h3>
+<ul>
+<li><code>{{SHA}}</code> has to be the full SHA</li>
+</ul>
+<h3 id="furtherreading">Further reading</h3>
+<ul>
+<li><a href="https://docs.github.com/en/actions">https://docs.github.com/en/actions</a></li>
+</ul>
+</article>
+
+
+
+<footer class="text-center mar-tb-6">
+    © 2024 Tibor Viragh, unless otherwise stated.
+</footer>
+
+<script>hljs.highlightAll();</script>
+</body>
+</html>
+

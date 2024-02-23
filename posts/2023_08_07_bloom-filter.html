@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Bloom Filter</title>
+    <meta name="description" content="Blog of a Software Engineer"/>
+    <meta name="keywords" content="blog,developer,programming,software engineering,C#,JAVA,python,shell script,bash,sh,linux,windows,Tibor Viragh,Virágh Tibor"/>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Alegreya:400,400i|Lato:400,400i,700,900|Roboto+Mono:400,300">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/shades-of-purple.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+
+    <link rel="stylesheet" href="/css/normalize.css"/>
+    <link rel="stylesheet" href="/css/theme.css"/>
+</head>
+<body>
+<nav class="nav">
+    <div class="nav__left">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+    </div>
+    <div class="nav__right">
+
+        <a target="_blank" href="https://github.com/poseen" class="link-github">GitHub</a>
+
+
+
+        <a target="_blank" href="https://www.linkedin.com/in/tiborviragh" class="link-linkedin">LinkedIn</a>
+
+
+        <a href="mailto:viraght@gmail.com" class="link-email">Email</a>
+
+    </div>
+</nav>
+
+<article class="mar-b-7">
+    <header class="text-center">
+        <time class="mar-b-6" datetime="Mon, August 07, 2023">Mon, August 07, 2023</time>
+        <h1 class="mar-b-7">Bloom Filter</h1>
+    </header>
+    <h3 id="problem">Problem</h3>
+<p>There is a requirement to find out quickly if a given item is in a set or not. The set may be huge (terrabytes), or accessing the items may take too much time.</p>
+<h4 id="exampleproblem">Example problem</h4>
+<p>We have a system where users are continuously registering themselves. We would like to test quickly whether their future-username is already taken or not.</p>
+<h3 id="solutionbloomfilter">Solution: Bloom Filter</h3>
+<p>Bloom filter is the collection of a bitmap and multiple hash functions where toggling bits in the bitmaps in positions calculated by the hash functions will indicate if an item is part of the set or not with a given probability.</p>
+<h4 id="algorithmanddatastructure">Algorithm and data structure</h4>
+<ol>
+<li><p>Let's assume we have a 16 bits long bitmap and 2 hash functions, <strong>f</strong> and <strong>g</strong>. The bits in the bitmap are set to <strong>0</strong>.</p>
+<p><img src="./2023_08_07_bloom-filter/bloomfilter_step_0.jpg" alt="Bloom filter initialization" /></p></li>
+<li><p>Let's insert two items: <strong>apple</strong> and <strong>peach</strong>. The <strong>f</strong> and <strong>g</strong> functions will return:</p>
+<ul>
+<li><strong>( f(apple), g(apple) ) = (12, 8)</strong></li>
+<li><strong>( f(peach), g(peach) ) = (10, 4)</strong></li></ul>
+<p>We search for the indexes returned by <strong>f</strong> and <strong>g</strong> for the different items and set those bits to <strong>1</strong>:</p>
+<p><img src="./2023_08_07_bloom-filter/bloomfilter_step_1.jpg" alt="Vanilla case - inserting 2 new items" /></p></li>
+<li><p>Let's insert an another item, <strong>pear</strong>. Please note that in this case one of the hash functions will return an index which has already been set to <strong>1</strong>. This is not a problem in this case. (Later, we will see it may be a problem if all the indexes returned by the hash functions are already set, because that means we have found an item which was very likely been already added.):</p>
+<p><img src="./2023_08_07_bloom-filter/bloomfilter_step_2.jpg" alt="Inserting a new item with partial collision" /></p></li>
+<li><p>Let's try to reintroduce an item which has already been added, <strong>peach</strong>. Hash functions will return the <strong>(10, 4)</strong> pair. If we check it, we will see that both indexes are already set to <strong>1</strong>. It means: the item has <strong>very likely</strong> been already added: </p>
+<p><img src="./2023_08_07_bloom-filter/bloomfilter_step_3.jpg" alt="Try to re-add an already added item" /></p></li>
+<li><p>Let's try to add a new item, <strong>plum</strong>, its "coordinates" will be <strong>(12, 2)</strong>. We can see that both of these indexes are already set to 1. That means we detected a collision, and we have to assume that <strong>plum</strong> has already been added. The truth is, plum isn't in the list. Possible problems:</p></li>
+</ol>
+<ul>
+<li><p>The bitmap is not long enough for the number of items already added</p></li>
+<li><p>Hash functions do not distribute very well</p></li>
+<li><p>Too few hash functions.</p>
+<p><img src="./2023_08_07_bloom-filter/bloomfilter_step_4.jpg" alt="False negative case - new item is detected as already added" /></p></li>
+</ul>
+<p>In the end, bloom filter is a (usually huge) number. In this case our bloom filter value is 5396, which is much easier to store and handle than a list of strings.</p>
+<h3 id="usageexamples">Usage examples</h3>
+<h4 id="helpwithcaching1">Help with caching(1)</h4>
+<p>Bloom filter can help with caching: if you don't want to cache something which will be accessed only once, then we can use to cache only those data which are found in our bloom filter. This way we can slow down our cache filling up.</p>
+<h4 id="googlechromemalicioussites12">Google Chrome: malicious sites (1) (2)</h4>
+<p>Chrome used bloom filters to keep users from reaching a malicious site. They have sent the bloom filter value to the clients' machines and there the URL check against this bloom filter told Chrome if the URL was in the malicious list or not.</p>
+<h4 id="spellcheck">Spellcheck</h4>
+<p>There are multiple solutions to this problem, most of them use some kind of search. It can be a linear search or a search in a tree graph. These algorithms may take O(n) to O(log(n)) steps to accomplish, and also will take a lot of space, since this way or the other, the word-list has to be stored.</p>
+<p>Although if we tolerate a low probability of false positives, then we can reduce it to O(1) and drastically reduce the required space. Just use bloom filter: add all the words to the filter and after that you can check if a word is added to the bloom filter or not. As an extra, the words don't have to be stored, it is enough to have a big integer (maybe let's say ~64 kilobytes vs ~10 megabytes) to be stored. </p>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>You will have to roughly know the number of items <strong>n</strong> you would like to store.</li>
+<li>You have to know the <strong>p</strong> maximum probability of false positives you tolerate.</li>
+<li>Using <strong>n</strong> and <strong>p</strong> you can calculate the number of bits and the number of hash functions to be used. See <a href="https://hur.st/bloomfilter/">Bloom filter calculator</a>.</li>
+<li>Removing is impossible since setting a bit to zero may cause other items to be removed too.</li>
+<li>As the number of items increase the probability of false positives are increasing. If this is too high then bloom filter should be regenerated with more bits and hash functions.</li>
+</ul>
+<h3 id="moreinformationreferences">More information &amp; References</h3>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=Bay3X9PAX5k">Great explanation video</a> - Check out his other videos too! (2)</li>
+<li><a href="https://github.com/mattlorimor/ProbabilisticDataStructures/blob/master/ProbabilisticDataStructures/BloomFilter.cs">C# implementation</a></li>
+<li><a href="https://hur.st/bloomfilter/">Bloom filter calculator</a> - Great tool and informative.</li>
+<li><a href="https://en.wikipedia.org/wiki/Bloom_filter">Bloom Filter - Wikipedia</a> (1)</li>
+</ul>
+<p><strong>Cheatsheet downloadable <a href="./2023_08_07_bloom-filter/bloomfilter_all_steps.pdf">here</a></strong>.</p>
+</article>
+
+
+
+<footer class="text-center mar-tb-6">
+    © 2024 Tibor Viragh, unless otherwise stated.
+</footer>
+
+<script>hljs.highlightAll();</script>
+</body>
+</html>
+
